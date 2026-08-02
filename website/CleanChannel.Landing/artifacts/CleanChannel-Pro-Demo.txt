@@ -1,0 +1,4 @@
+CleanChannel Pro artifact placeholder
+
+This file proves the local download gate only. It is not a signed application,
+driver, installer, or production Pro binary.

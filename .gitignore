@@ -3,6 +3,9 @@
 [Oo]bj/
 TestResults/
 artifacts/
+!website/CleanChannel.Landing/artifacts/
+website/CleanChannel.Landing/artifacts/*
+!website/CleanChannel.Landing/artifacts/CleanChannel-Pro-Demo.txt
 .vs/
 *.user
 *.suo
