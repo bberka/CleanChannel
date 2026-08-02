@@ -2,6 +2,8 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using CleanChannel.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace CleanChannel.App;
 
@@ -11,11 +13,15 @@ public partial class App : Application, IDisposable
     private MainWindow? _mainWindow;
     private bool _ownsSingleInstanceMutex;
     private bool _isExiting;
+    private ApplicationLogging? _logging;
+    private ILogger? _logger;
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            InitializeLogging();
+
             _singleInstanceMutex = new Mutex(
                 initiallyOwned: true,
                 name: "CleanChannel.App.SingleInstance",
@@ -23,6 +29,11 @@ public partial class App : Application, IDisposable
 
             if (!createdNew)
             {
+                if (_logger is not null)
+                {
+                    AppLogMessages.SecondInstance(_logger);
+                }
+
                 _singleInstanceMutex.Dispose();
                 _singleInstanceMutex = null;
                 desktop.Shutdown();
@@ -41,6 +52,11 @@ public partial class App : Application, IDisposable
             if (trayIcon is not null)
             {
                 trayIcon.Icon = TrayIconFactory.Create();
+            }
+
+            if (_logger is not null)
+            {
+                AppLogMessages.Started(_logger);
             }
         }
 
@@ -90,8 +106,33 @@ public partial class App : Application, IDisposable
         Dispose();
     }
 
+    private void InitializeLogging()
+    {
+        try
+        {
+            _logging = ApplicationLoggingFactory.Create(new ApplicationLoggingOptions
+            {
+                EnableConsole = System.Diagnostics.Debugger.IsAttached,
+            });
+            _logger = _logging.LoggerFactory.CreateLogger<App>();
+        }
+        catch (Exception error)
+        {
+            System.Diagnostics.Trace.WriteLine($"CleanChannel logging initialization failed: {error}");
+        }
+    }
+
     public void Dispose()
     {
+        if (_logger is not null)
+        {
+            AppLogMessages.Stopped(_logger);
+        }
+
+        _logging?.Dispose();
+        _logging = null;
+        _logger = null;
+
         if (_singleInstanceMutex is null)
         {
             GC.SuppressFinalize(this);

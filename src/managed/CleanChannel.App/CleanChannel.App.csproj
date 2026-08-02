@@ -13,5 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CleanChannel.Contracts\CleanChannel.Contracts.csproj" />
     <ProjectReference Include="..\CleanChannel.Core\CleanChannel.Core.csproj" />
+    <ProjectReference Include="..\CleanChannel.Diagnostics\CleanChannel.Diagnostics.csproj" />
+    <ProjectReference Include="..\CleanChannel.ProContracts\CleanChannel.ProContracts.csproj" />
   </ItemGroup>
 </Project>
