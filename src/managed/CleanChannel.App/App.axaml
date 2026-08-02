@@ -1,0 +1,24 @@
+<Application
+    x:Class="CleanChannel.App.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedThemeVariant="Default">
+  <Application.Styles>
+    <FluentTheme />
+  </Application.Styles>
+  <TrayIcon.Icons>
+    <TrayIcons>
+      <TrayIcon
+          ToolTipText="CleanChannel"
+          Clicked="TrayIcon_OnClicked">
+        <TrayIcon.Menu>
+          <NativeMenu>
+            <NativeMenuItem Header="Open CleanChannel" Click="OpenMenuItem_OnClick" />
+            <NativeMenuItem Header="AudioHost: Not connected" IsEnabled="False" />
+            <NativeMenuItem Header="Exit" Click="ExitMenuItem_OnClick" />
+          </NativeMenu>
+        </TrayIcon.Menu>
+      </TrayIcon>
+    </TrayIcons>
+  </TrayIcon.Icons>
+</Application>

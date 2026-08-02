@@ -1,0 +1,36 @@
+<Window
+    x:Class="CleanChannel.App.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="720"
+    Height="460"
+    MinWidth="560"
+    MinHeight="360"
+    Title="CleanChannel"
+    WindowStartupLocation="CenterScreen">
+  <ScrollViewer>
+    <StackPanel Margin="32" Spacing="24">
+      <StackPanel Spacing="6">
+        <TextBlock FontSize="30" FontWeight="SemiBold" Text="CleanChannel" />
+        <TextBlock Opacity="0.72" Text="Lightweight Windows audio control" />
+      </StackPanel>
+
+      <Border Padding="20" Background="#20252D" CornerRadius="10">
+        <StackPanel Spacing="10">
+          <TextBlock FontSize="18" FontWeight="SemiBold" Text="AudioHost" />
+          <TextBlock FontSize="16" Text="Not connected" />
+          <TextBlock Opacity="0.72" TextWrapping="Wrap">
+            The control plane is running, but the native AudioHost is not connected yet. No audio processing or routing is being performed.
+          </TextBlock>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="8">
+        <TextBlock FontSize="18" FontWeight="SemiBold" Text="Ready for setup" />
+        <TextBlock Opacity="0.72" TextWrapping="Wrap">
+          Device enumeration, channels, profiles, and verification will appear here when AudioHost is available.
+        </TextBlock>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

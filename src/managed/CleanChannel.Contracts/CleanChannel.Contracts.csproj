@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>CleanChannel.Contracts</RootNamespace>
+    <AssemblyName>CleanChannel.Contracts</AssemblyName>
+  </PropertyGroup>
+</Project>
