@@ -27,6 +27,10 @@ out/
 *.pem
 *.pfx
 *.snk
+private/
+src/pro/
+*.license.json
+*.entitlement.json
 
 # OS/editor files
 .DS_Store

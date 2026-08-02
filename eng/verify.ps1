@@ -1,3 +1,10 @@
+param(
+    [ValidateSet("Debug", "Release")]
+    [string] $Configuration = "Release",
+    [switch] $IncludePro,
+    [string] $ProRoot = (Join-Path $PSScriptRoot "..\private\CleanChannel.Pro")
+)
+
 $ErrorActionPreference = "Stop"
 
 # Avalonia's optional build telemetry should never be part of repository verification.
@@ -11,12 +18,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "dotnet restore failed with exit code $LASTEXITCODE"
 }
 
-dotnet build $solutionPath --configuration Release --no-restore
+dotnet build $solutionPath --configuration $Configuration --no-restore
 if ($LASTEXITCODE -ne 0) {
     throw "dotnet build failed with exit code $LASTEXITCODE"
 }
 
-dotnet test $solutionPath --configuration Release --no-build --no-restore
+dotnet test $solutionPath --configuration $Configuration --no-build --no-restore
 if ($LASTEXITCODE -ne 0) {
     throw "dotnet test failed with exit code $LASTEXITCODE"
 }
@@ -34,6 +41,39 @@ if ($LASTEXITCODE -ne 0) {
 cargo build --manifest-path $nativeManifestPath
 if ($LASTEXITCODE -ne 0) {
     throw "cargo build failed with exit code $LASTEXITCODE"
+}
+
+if ($IncludePro) {
+    $proSolutionPath = Join-Path $ProRoot "CleanChannel.Pro.sln"
+
+    if (-not (Test-Path -LiteralPath $proSolutionPath -PathType Leaf)) {
+        throw "-IncludePro was specified, but the private Pro solution was not found at '$proSolutionPath'."
+    }
+
+    $proHostProjectPath = Join-Path $ProRoot "CleanChannel.ProHost\CleanChannel.ProHost.csproj"
+    if (-not (Test-Path -LiteralPath $proHostProjectPath -PathType Leaf)) {
+        throw "-IncludePro was specified, but the expected ProHost project was not found at '$proHostProjectPath'."
+    }
+
+    $proHostProject = Get-Content -LiteralPath $proHostProjectPath -Raw
+    if ($proHostProject -notmatch "CleanChannel\.ProContracts") {
+        throw "The private ProHost project must reference the public CleanChannel.ProContracts project or package."
+    }
+
+    dotnet restore $proSolutionPath /p:CleanChannelProEnabled=true /p:CleanChannelProRoot=$ProRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "private Pro restore failed with exit code $LASTEXITCODE"
+    }
+
+    dotnet build $proSolutionPath --configuration $Configuration --no-restore /p:CleanChannelProEnabled=true /p:CleanChannelProRoot=$ProRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "private Pro build failed with exit code $LASTEXITCODE"
+    }
+
+    dotnet test $proSolutionPath --configuration $Configuration --no-build --no-restore /p:CleanChannelProEnabled=true /p:CleanChannelProRoot=$ProRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "private Pro tests failed with exit code $LASTEXITCODE"
+    }
 }
 
 Write-Output "CleanChannel verification passed."

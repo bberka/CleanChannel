@@ -7,5 +7,8 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <Deterministic>true</Deterministic>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CleanChannelProEnabled Condition="'$(CleanChannelProEnabled)' == ''">false</CleanChannelProEnabled>
+    <CleanChannelProRoot Condition="'$(CleanChannelProRoot)' == ''">$(MSBuildThisFileDirectory)private\CleanChannel.Pro</CleanChannelProRoot>
+    <CleanChannelProSolution Condition="'$(CleanChannelProSolution)' == ''">$(CleanChannelProRoot)\CleanChannel.Pro.sln</CleanChannelProSolution>
   </PropertyGroup>
 </Project>

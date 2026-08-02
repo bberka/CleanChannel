@@ -1,0 +1,13 @@
+<Project>
+  <Target
+      Name="ValidateCleanChannelProBuild"
+      BeforeTargets="Build"
+      Condition="'$(CleanChannelProEnabled)' == 'true'">
+    <Error
+        Condition="!Exists('$(CleanChannelProSolution)')"
+        Text="CleanChannel Pro is enabled, but the private Pro solution was not found at '$(CleanChannelProSolution)'. Keep Pro source in its separate private checkout or build without CleanChannelProEnabled=true." />
+    <Message
+        Importance="High"
+        Text="CleanChannel Pro build enabled from '$(CleanChannelProSolution)'." />
+  </Target>
+</Project>
