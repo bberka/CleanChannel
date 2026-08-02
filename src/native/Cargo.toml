@@ -3,7 +3,7 @@ name = "cleanchannel-audiohost"
 version = "0.1.0"
 edition = "2021"
 description = "CleanChannel user-mode audio host foundation"
-license = "MIT"
+license = "Apache-2.0"
 
 [lib]
 name = "cleanchannel_audiohost"
