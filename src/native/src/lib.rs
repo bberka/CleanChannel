@@ -58,6 +58,18 @@ impl HostState {
         self.lifecycle
     }
 
+    pub const fn is_ready(self) -> bool {
+        matches!(self.lifecycle, HostLifecycle::Running)
+    }
+
+    pub const fn readiness_label(self) -> &'static str {
+        if self.is_ready() {
+            "audio-host-ready"
+        } else {
+            "process-alive"
+        }
+    }
+
     pub fn transition(&mut self, next: HostLifecycle) -> Result<(), HostError> {
         let current = self.lifecycle;
         let valid = matches!(
@@ -119,5 +131,19 @@ mod tests {
         assert_eq!(HostConfig::new(HostMode::Lite).mode(), HostMode::Lite);
         assert_eq!(HostConfig::new(HostMode::Full).mode(), HostMode::Full);
         assert_eq!(HostConfig::default().mode(), HostMode::Lite);
+    }
+
+    #[test]
+    fn created_host_is_alive_but_not_audio_ready() {
+        let mut state = HostState::new();
+
+        assert!(!state.is_ready());
+        assert_eq!(state.readiness_label(), "process-alive");
+
+        state.transition(HostLifecycle::Starting).unwrap();
+        state.transition(HostLifecycle::Running).unwrap();
+
+        assert!(state.is_ready());
+        assert_eq!(state.readiness_label(), "audio-host-ready");
     }
 }

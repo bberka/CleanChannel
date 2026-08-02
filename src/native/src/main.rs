@@ -12,8 +12,10 @@ fn main() {
         };
 
         println!(
-            "CleanChannel AudioHost status: healthy (mode={mode}, lifecycle={:?})",
-            state.lifecycle()
+            "CleanChannel AudioHost status: {} (mode={mode}, lifecycle={:?}, ready={})",
+            state.readiness_label(),
+            state.lifecycle(),
+            state.is_ready()
         );
         return;
     }
