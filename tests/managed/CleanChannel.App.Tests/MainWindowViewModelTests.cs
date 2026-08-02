@@ -64,6 +64,28 @@ public sealed class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task NavigationSelectionUpdatesCurrentPageAndVisibility()
+    {
+        await using var viewModel = new MainWindowViewModel(new DemoAudioControlService());
+
+        await viewModel.InitializeAsync();
+
+        Assert.Equal(MainWindowViewModel.DashboardPageKey, viewModel.CurrentPageKey);
+        Assert.True(viewModel.IsDashboardPageVisible);
+
+        viewModel.SelectedNavigationItem = MainWindowViewModel.DevicesPageKey;
+
+        Assert.Equal(MainWindowViewModel.DevicesPageKey, viewModel.CurrentPageKey);
+        Assert.True(viewModel.IsDevicesPageVisible);
+        Assert.False(viewModel.IsDashboardPageVisible);
+
+        viewModel.SelectedNavigationItem = MainWindowViewModel.ChannelsPageKey;
+
+        Assert.Equal(MainWindowViewModel.ChannelsPageKey, viewModel.CurrentPageKey);
+        Assert.True(viewModel.IsChannelsPageVisible);
+    }
+
+    [Fact]
     public void ChannelStatusSurfacesUnavailableStateAndDisablesEditing()
     {
         var channel = new ChannelViewModel(

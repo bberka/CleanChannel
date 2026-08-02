@@ -7,6 +7,12 @@ namespace CleanChannel.App.ViewModels;
 
 public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
 {
+    public const string DashboardPageKey = "Dashboard";
+    public const string ChannelsPageKey = "Channels";
+    public const string DevicesPageKey = "Devices";
+    public const string ProfilesPageKey = "Profiles";
+    public const string SettingsPageKey = "Settings";
+
     private readonly IAudioControlService _audioService;
     private readonly ControlOperationCoordinator _operationCoordinator = new();
     private readonly object _disposeGate = new();
@@ -21,6 +27,8 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
     private string? _selectedOutputDeviceId;
     private AudioDeviceViewModel? _selectedInputDevice;
     private AudioDeviceViewModel? _selectedOutputDevice;
+    private string _selectedNavigationItem = DashboardPageKey;
+    private string _currentPageKey = DashboardPageKey;
     private AudioControlState? _lastKnownState;
     private Task _pendingDeviceChanges = Task.CompletedTask;
     private Task? _disposeTask;
@@ -40,6 +48,15 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
     public ObservableCollection<EqProfileViewModel> EqProfiles { get; } = new();
 
     public ObservableCollection<ChannelViewModel> Channels { get; } = new();
+
+    public IReadOnlyList<string> NavigationItems { get; } =
+    [
+        DashboardPageKey,
+        ChannelsPageKey,
+        DevicesPageKey,
+        ProfilesPageKey,
+        SettingsPageKey,
+    ];
 
     public IAsyncRelayCommand RefreshCommand { get; }
 
@@ -154,6 +171,38 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
         }
     }
 
+    public string SelectedNavigationItem
+    {
+        get => _selectedNavigationItem;
+        set
+        {
+            if (!SetProperty(ref _selectedNavigationItem, value))
+            {
+                return;
+            }
+
+            CurrentPageKey = value;
+        }
+    }
+
+    public string CurrentPageKey
+    {
+        get => _currentPageKey;
+        private set
+        {
+            if (!SetProperty(ref _currentPageKey, value))
+            {
+                return;
+            }
+
+            OnPropertyChanged(nameof(IsDashboardPageVisible));
+            OnPropertyChanged(nameof(IsChannelsPageVisible));
+            OnPropertyChanged(nameof(IsDevicesPageVisible));
+            OnPropertyChanged(nameof(IsProfilesPageVisible));
+            OnPropertyChanged(nameof(IsSettingsPageVisible));
+        }
+    }
+
     public string BackendLabel => _audioService.IsDemoBackend ? "Demo backend" : "AudioHost backend";
 
     public string ReadinessLabel => Readiness.ToString();
@@ -169,6 +218,16 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
     public string ActionStateLabel => IsBusy ? "Applying…" : "Ready for changes";
 
     public Task PendingDeviceChanges => _pendingDeviceChanges;
+
+    public bool IsDashboardPageVisible => CurrentPageKey == DashboardPageKey;
+
+    public bool IsChannelsPageVisible => CurrentPageKey == ChannelsPageKey;
+
+    public bool IsDevicesPageVisible => CurrentPageKey == DevicesPageKey;
+
+    public bool IsProfilesPageVisible => CurrentPageKey == ProfilesPageKey;
+
+    public bool IsSettingsPageVisible => CurrentPageKey == SettingsPageKey;
 
     public void StopAcceptingOperations()
         => _operationCoordinator.StopAccepting();
@@ -330,6 +389,13 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
             device => string.Equals(device.DeviceId, state.SelectedInputDeviceId, StringComparison.Ordinal));
         SelectedOutputDevice = OutputDevices.FirstOrDefault(
             device => string.Equals(device.DeviceId, state.SelectedOutputDeviceId, StringComparison.Ordinal));
+
+        OnPropertyChanged(nameof(CurrentPageKey));
+        OnPropertyChanged(nameof(IsDashboardPageVisible));
+        OnPropertyChanged(nameof(IsChannelsPageVisible));
+        OnPropertyChanged(nameof(IsDevicesPageVisible));
+        OnPropertyChanged(nameof(IsProfilesPageVisible));
+        OnPropertyChanged(nameof(IsSettingsPageVisible));
     }
 
     private void RestoreLastKnownState()
