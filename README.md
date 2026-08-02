@@ -11,9 +11,12 @@ The goal is to provide stable virtual audio channels for games, chat application
 The current demo provides:
 
 - An Avalonia/Fluent tray application with Sound, Chat, Game, and Mic control cards.
+- A Windows Fluent desktop shell with a built-in `SplitView`-based left sidebar for `Dashboard`, `Channels`, `Devices`, `Profiles`, and `Settings`.
 - Local control-plane behavior for volume, mute, full mute, full off/restore, device/EQ selection, shortcuts, status reporting, and theme support.
 - A local landing-site sandbox for account registration, demo annual/lifetime license flows, activation, and protected placeholder Pro downloads.
 - Serilog-based local diagnostics and a fail-fast verification script covering managed code, the landing site, and Rust checks.
+
+The sidebar is the desktop shell and navigation layer. It organizes control-plane destinations without owning real-time audio processing; the audio plane remains isolated in the future AudioHost/endpoint layers.
 
 This is not yet an audio-routing release. The demo does not provide real WASAPI processing, virtual render/capture devices, a production payment or licensing backend, or signed Pro binaries. The website sandbox is for local development only.
 

@@ -24,7 +24,17 @@ Avalonia supports Windows tray integration and NativeAOT publishing. NativeAOT s
 
 References: [Avalonia TrayIcon](https://docs.avaloniaui.net/controls/navigation/trayicon), [Avalonia NativeAOT](https://docs.avaloniaui.net/docs/deployment/native-aot), [.NET NativeAOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/)
 
-The MVP UI uses the existing `Avalonia.Themes.Fluent` package for controls and `CommunityToolkit.Mvvm` for `ObservableObject` and `AsyncRelayCommand`. Both are pinned in the app project; no custom MVVM framework or theme package is introduced.
+The MVP UI uses the official Avalonia `Avalonia.Themes.Fluent` package (`12.0.4`) for the Windows Fluent theme and `CommunityToolkit.Mvvm` (`8.4.2`) for `ObservableObject` and `AsyncRelayCommand`. Both are pinned in the app project; no custom MVVM framework or theme package is introduced.
+
+The desktop shell uses Avalonia's built-in `SplitView` as a left sidebar with these destinations:
+
+- `Dashboard`
+- `Channels`
+- `Devices`
+- `Profiles`
+- `Settings`
+
+This sidebar is the shell/navigation layer for the control plane. It owns navigation and user-facing configuration surfaces, but it does not run the real-time audio loop or place UI work on an audio callback. The sidebar can therefore evolve independently from the AudioHost and virtual endpoint layers.
 
 `App.Initialize` explicitly loads `App.axaml` before desktop lifetime setup so Fluent styles and tray definitions are present at runtime. The demo window follows the OS theme instead of forcing dark mode. Its small CleanChannel semantic palette is intentionally defined as Light/Dark resource dictionaries because the MVP has no product design-token package yet; controls consume those resources through `DynamicResource`.
 

@@ -4,12 +4,13 @@ This roadmap is ordered by technical risk and user value. Each phase should leav
 
 ## Current 0.1 demo checkpoint
 
-- [x] Avalonia/Fluent tray and control-plane demo with Sound, Chat, Game, and Mic cards.
+- [x] Windows Fluent-themed Avalonia tray and control-plane demo using the official `Avalonia.Themes.Fluent` package and `CommunityToolkit.Mvvm`.
+- [x] Built-in Avalonia `SplitView` desktop shell with a left sidebar for Dashboard, Channels, Devices, Profiles, and Settings.
 - [x] Local demo controls for volume, mute, full mute, full off/restore, device/EQ selection, shortcuts, status, and themes.
 - [x] Local landing-site licensing sandbox with registration, demo annual/lifetime flows, activation, and protected placeholder Pro download.
 - [x] Fail-fast verification for the managed solution, landing site, and Rust checks.
 
-The checkpoint is intentionally a control-plane and licensing demo. It does not include real WASAPI processing, virtual render/capture devices, a production payment or licensing backend, or signed Pro artifacts.
+The sidebar is the desktop shell/navigation layer and remains separate from the real-time audio plane. The checkpoint is intentionally a control-plane and licensing demo. It does not include real WASAPI processing, virtual render/capture devices, a production payment or licensing backend, or signed Pro artifacts.
 
 ## Phase 0: Design and feasibility
 
