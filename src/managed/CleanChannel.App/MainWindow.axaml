@@ -2,35 +2,144 @@
     x:Class="CleanChannel.App.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Width="720"
-    Height="460"
-    MinWidth="560"
-    MinHeight="360"
+    xmlns:vm="using:CleanChannel.App.ViewModels"
+    x:DataType="vm:MainWindowViewModel"
+    Width="960"
+    Height="720"
+    MinWidth="720"
+    MinHeight="560"
+    Background="{DynamicResource CleanChannelPageBrush}"
     Title="CleanChannel"
     WindowStartupLocation="CenterScreen">
-  <ScrollViewer>
-    <StackPanel Margin="32" Spacing="24">
-      <StackPanel Spacing="6">
-        <TextBlock FontSize="30" FontWeight="SemiBold" Text="CleanChannel" />
-        <TextBlock Opacity="0.72" Text="Lightweight Windows audio control" />
-      </StackPanel>
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Ctrl+Shift+M" Command="{Binding ToggleFullMuteCommand}" />
+    <KeyBinding Gesture="Ctrl+Shift+O" Command="{Binding ToggleFullOffCommand}" />
+  </Window.KeyBindings>
 
-      <Border Padding="20" Background="#20252D" CornerRadius="10">
-        <StackPanel Spacing="10">
-          <TextBlock FontSize="18" FontWeight="SemiBold" Text="AudioHost" />
-          <TextBlock FontSize="16" Text="Not connected" />
-          <TextBlock Opacity="0.72" TextWrapping="Wrap">
-            The control plane is running, but the native AudioHost is not connected yet. No audio processing or routing is being performed.
-          </TextBlock>
+  <Grid RowDefinitions="Auto,*,Auto">
+    <Border Grid.Row="0" Background="{DynamicResource CleanChannelSurfaceBrush}" Padding="28,24" BorderBrush="{DynamicResource CleanChannelBorderBrush}" BorderThickness="0,0,0,1">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="5">
+          <TextBlock FontSize="30" FontWeight="SemiBold" Foreground="{DynamicResource CleanChannelTextBrush}" Text="CleanChannel" />
+          <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="Fast, local control for every audio channel" />
         </StackPanel>
-      </Border>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+          <Button AutomationProperties.Name="Refresh AudioHost state" Command="{Binding RefreshCommand}" Content="Refresh" />
+          <Button AutomationProperties.Name="Mute all channels" Command="{Binding ToggleFullMuteCommand}" Content="{Binding FullMuteLabel}" />
+          <Button AutomationProperties.Name="Disable or restore all virtual audio" Command="{Binding ToggleFullOffCommand}" Content="{Binding FullOffLabel}" />
+        </StackPanel>
+      </Grid>
+    </Border>
 
-      <StackPanel Spacing="8">
-        <TextBlock FontSize="18" FontWeight="SemiBold" Text="Ready for setup" />
-        <TextBlock Opacity="0.72" TextWrapping="Wrap">
-          Device enumeration, channels, profiles, and verification will appear here when AudioHost is available.
-        </TextBlock>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Margin="28" Spacing="20">
+        <Border Background="{DynamicResource CleanChannelSurfaceStrongBrush}" BorderBrush="{DynamicResource CleanChannelBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="18">
+          <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+            <Border Width="10" Height="10" CornerRadius="5" Background="{DynamicResource CleanChannelWarningBrush}" Margin="0,5,12,0" />
+            <StackPanel Grid.Column="1" Spacing="4">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource CleanChannelTextBrush}" Text="AudioHost" />
+                <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource CleanChannelWarningBrush}" Text="{Binding ReadinessLabel}" />
+              </StackPanel>
+              <TextBlock Foreground="{DynamicResource CleanChannelTextBrush}" Text="{Binding StatusMessage}" AutomationProperties.LiveSetting="Polite" />
+              <TextBlock Foreground="{DynamicResource CleanChannelStatusBrush}" Text="{Binding ProcessingLabel}" />
+            </StackPanel>
+            <TextBlock Grid.Column="2" Foreground="{DynamicResource CleanChannelMutedBrush}" Text="{Binding BackendLabel}" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,12,0,0" Foreground="{DynamicResource CleanChannelMutedBrush}" Text="{Binding ActionStateLabel}" />
+          </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource CleanChannelSurfaceBrush}" BorderBrush="{DynamicResource CleanChannelBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="18">
+          <StackPanel Spacing="12">
+            <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource CleanChannelTextBrush}" Text="Physical devices" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="18">
+              <StackPanel Spacing="6">
+                <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="Output device" />
+                <ComboBox AutomationProperties.Name="Selected output device" ItemsSource="{Binding OutputDevices}" SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AudioDeviceViewModel">
+                      <TextBlock Text="{Binding DisplayName}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+              </StackPanel>
+              <StackPanel Grid.Column="1" Spacing="6">
+                <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="Microphone" />
+                <ComboBox AutomationProperties.Name="Selected microphone" ItemsSource="{Binding InputDevices}" SelectedItem="{Binding SelectedInputDevice, Mode=TwoWay}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AudioDeviceViewModel">
+                      <TextBlock Text="{Binding DisplayName}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+              </StackPanel>
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel Spacing="3">
+            <TextBlock FontSize="22" FontWeight="SemiBold" Foreground="{DynamicResource CleanChannelTextBrush}" Text="Channels" />
+            <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="Adjust the control-plane state that will later drive the native AudioHost." />
+          </StackPanel>
+          <TextBlock Grid.Column="1" Foreground="{DynamicResource CleanChannelMutedBrush}" Text="Ctrl+Shift+M · full mute   Ctrl+Shift+O · full off" VerticalAlignment="Bottom" />
+        </Grid>
+
+        <ItemsControl ItemsSource="{Binding Channels}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" ItemWidth="420" ItemHeight="300" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:ChannelViewModel">
+              <Border AutomationProperties.Name="{Binding AccessibilityName}" Margin="0,0,16,16" Padding="18" Background="{DynamicResource CleanChannelSurfaceBrush}" BorderBrush="{DynamicResource CleanChannelBorderBrush}" BorderThickness="1" CornerRadius="12">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="12">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource CleanChannelTextBrush}" Text="{Binding DisplayName}" />
+                    <TextBlock Grid.Column="1" Foreground="{DynamicResource CleanChannelStatusBrush}" Text="{Binding StatusLabel}" AutomationProperties.Name="{Binding StatusLabel}" />
+                  </Grid>
+                  <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+                    <Slider AutomationProperties.Name="{Binding VolumeAccessibilityLabel}" IsEnabled="{Binding CanEdit}" Minimum="0" Maximum="1" Value="{Binding Volume, Mode=TwoWay}" />
+                    <TextBlock Grid.Column="1" Margin="12,0,0,0" Foreground="{DynamicResource CleanChannelTextBrush}" Text="{Binding VolumeLabel}" VerticalAlignment="Center" />
+                  </Grid>
+                  <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8">
+                    <Button AutomationProperties.Name="{Binding MuteAccessibilityLabel}" IsEnabled="{Binding CanEdit}" Command="{Binding ToggleMuteCommand}" Content="{Binding MuteButtonLabel}" />
+                    <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="{Binding RouteLabel}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                  </StackPanel>
+                  <StackPanel Grid.Row="3" Spacing="5">
+                    <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="Channel output" />
+                    <ComboBox AutomationProperties.Name="{Binding OutputAccessibilityLabel}" IsEnabled="{Binding CanEdit}" ItemsSource="{Binding AvailableOutputDevices}" SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}">
+                      <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:AudioDeviceViewModel">
+                          <TextBlock Text="{Binding DisplayName}" />
+                        </DataTemplate>
+                      </ComboBox.ItemTemplate>
+                    </ComboBox>
+                  </StackPanel>
+                  <StackPanel Grid.Row="4" Spacing="5">
+                    <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="EQ profile" />
+                    <ComboBox AutomationProperties.Name="{Binding EqAccessibilityLabel}" IsEnabled="{Binding CanEdit}" ItemsSource="{Binding AvailableEqProfiles}" SelectedItem="{Binding SelectedEqProfile, Mode=TwoWay}">
+                      <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:EqProfileViewModel">
+                          <TextBlock Text="{Binding DisplayName}" />
+                        </DataTemplate>
+                      </ComboBox.ItemTemplate>
+                    </ComboBox>
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
       </StackPanel>
-    </StackPanel>
-  </ScrollViewer>
+    </ScrollViewer>
+
+    <Border Grid.Row="2" Background="{DynamicResource CleanChannelSurfaceBrush}" Padding="28,12" BorderBrush="{DynamicResource CleanChannelBorderBrush}" BorderThickness="0,1,0,0">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Foreground="{DynamicResource CleanChannelMutedBrush}" Text="CleanChannel 0.1 demo · control plane only" />
+        <TextBlock Grid.Column="1" Foreground="{DynamicResource CleanChannelMutedBrush}" Text="No real audio processing yet" />
+      </Grid>
+    </Border>
+  </Grid>
 </Window>

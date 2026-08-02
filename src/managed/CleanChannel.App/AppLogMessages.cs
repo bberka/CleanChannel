@@ -21,4 +21,10 @@ internal static partial class AppLogMessages
         Level = LogLevel.Information,
         Message = "A second CleanChannel instance was requested; the new instance is exiting.")]
     public static partial void SecondInstance(ILogger logger);
+
+    [LoggerMessage(
+        EventId = 1003,
+        Level = LogLevel.Error,
+        Message = "CleanChannel shutdown coordination failed.")]
+    public static partial void ShutdownFailed(ILogger logger, Exception exception);
 }

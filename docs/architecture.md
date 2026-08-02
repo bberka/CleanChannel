@@ -24,6 +24,12 @@ Avalonia supports Windows tray integration and NativeAOT publishing. NativeAOT s
 
 References: [Avalonia TrayIcon](https://docs.avaloniaui.net/controls/navigation/trayicon), [Avalonia NativeAOT](https://docs.avaloniaui.net/docs/deployment/native-aot), [.NET NativeAOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/)
 
+The MVP UI uses the existing `Avalonia.Themes.Fluent` package for controls and `CommunityToolkit.Mvvm` for `ObservableObject` and `AsyncRelayCommand`. Both are pinned in the app project; no custom MVVM framework or theme package is introduced.
+
+`App.Initialize` explicitly loads `App.axaml` before desktop lifetime setup so Fluent styles and tray definitions are present at runtime. The demo window follows the OS theme instead of forcing dark mode. Its small CleanChannel semantic palette is intentionally defined as Light/Dark resource dictionaries because the MVP has no product design-token package yet; controls consume those resources through `DynamicResource`.
+
+Channel cards render service readiness and per-channel availability. Control changes are serialized through the control-service boundary, awaited by the view-model, and restored to the last known state when the backend rejects a change.
+
 ### Control plane
 
 The control plane contains configuration, profile evaluation, channel state, licensing state, and health information. It communicates with the audio host through a versioned local IPC contract.
@@ -186,6 +192,14 @@ The supported fallback is:
 - Report `Configured` or `WrongEndpoint`.
 
 Automatic assignment is therefore feasible to prototype, but it should not be treated as a guaranteed Windows contract.
+
+## Global shortcuts
+
+The tray application registers the MVP full-mute (`Ctrl+Shift+M`) and full-off/restore (`Ctrl+Shift+O`) shortcuts through `IGlobalShortcutService`. On Windows, `WindowsGlobalShortcutService` attaches an Avalonia `Win32Properties` WndProc hook to a dedicated invisible host window and registers the combinations with `RegisterHotKey`. The host remains alive while the main window is hidden, so these shortcuts are not limited to `Window.KeyBindings`.
+
+Shortcut definitions are supplied as data through `GlobalShortcutDefinition`, allowing the defaults to be replaced by persisted user configuration later. Registration conflicts, unsupported keys, unavailable handles, and callback exceptions are reported or logged without terminating the tray app. `UnregisterHotKey` and the Avalonia hook are released during application shutdown.
+
+The automated app tests use a fake `IGlobalShortcutService` to execute the registered callbacks and verify that the real CommunityToolkit commands update the backend full-mute and full-off state. A native key-press smoke test remains an interactive Windows verification step: launch the app, leave it in the tray, press `Ctrl+Shift+M` and `Ctrl+Shift+O` from another application, reopen CleanChannel, and verify the labels show `Unmute all` and `Restore audio`; repeat the keys to restore the state. If another application owns a combination, the tray app stays running and logs the registration failure.
 
 ## Browser and website audio
 

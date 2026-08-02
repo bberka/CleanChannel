@@ -3,4 +3,7 @@
     <RootNamespace>CleanChannel.Core</RootNamespace>
     <AssemblyName>CleanChannel.Core</AssemblyName>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CleanChannel.Contracts\CleanChannel.Contracts.csproj" />
+  </ItemGroup>
 </Project>

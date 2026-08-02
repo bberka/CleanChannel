@@ -6,6 +6,36 @@
   <Application.Styles>
     <FluentTheme />
   </Application.Styles>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="CleanChannelPageBrush" Color="#F5F7FA" />
+          <SolidColorBrush x:Key="CleanChannelSurfaceBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="CleanChannelSurfaceStrongBrush" Color="#E8EDF3" />
+          <SolidColorBrush x:Key="CleanChannelBorderBrush" Color="#C8D2DE" />
+          <SolidColorBrush x:Key="CleanChannelTextBrush" Color="#17212B" />
+          <SolidColorBrush x:Key="CleanChannelMutedBrush" Color="#526171" />
+          <SolidColorBrush x:Key="CleanChannelAccentBrush" Color="#2368D1" />
+          <SolidColorBrush x:Key="CleanChannelWarningBrush" Color="#9B5E00" />
+          <SolidColorBrush x:Key="CleanChannelSuccessBrush" Color="#197044" />
+          <SolidColorBrush x:Key="CleanChannelStatusBrush" Color="#9B5E00" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="CleanChannelPageBrush" Color="#11151C" />
+          <SolidColorBrush x:Key="CleanChannelSurfaceBrush" Color="#1A2029" />
+          <SolidColorBrush x:Key="CleanChannelSurfaceStrongBrush" Color="#202832" />
+          <SolidColorBrush x:Key="CleanChannelBorderBrush" Color="#39485A" />
+          <SolidColorBrush x:Key="CleanChannelTextBrush" Color="#F3F6FA" />
+          <SolidColorBrush x:Key="CleanChannelMutedBrush" Color="#9AA8B8" />
+          <SolidColorBrush x:Key="CleanChannelAccentBrush" Color="#7DB0FF" />
+          <SolidColorBrush x:Key="CleanChannelWarningBrush" Color="#F1B84B" />
+          <SolidColorBrush x:Key="CleanChannelSuccessBrush" Color="#8ED6B1" />
+          <SolidColorBrush x:Key="CleanChannelStatusBrush" Color="#F1B84B" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
   <TrayIcon.Icons>
     <TrayIcons>
       <TrayIcon
@@ -14,7 +44,10 @@
         <TrayIcon.Menu>
           <NativeMenu>
             <NativeMenuItem Header="Open CleanChannel" Click="OpenMenuItem_OnClick" />
-            <NativeMenuItem Header="AudioHost: Not connected" IsEnabled="False" />
+            <NativeMenuItem Header="AudioHost: Demo / no processing" IsEnabled="False" />
+            <NativeMenuItemSeparator />
+            <NativeMenuItem Header="Full mute" Click="FullMuteMenuItem_OnClick" />
+            <NativeMenuItem Header="Full off / restore" Click="FullOffMenuItem_OnClick" />
             <NativeMenuItem Header="Exit" Click="ExitMenuItem_OnClick" />
           </NativeMenu>
         </TrayIcon.Menu>
