@@ -1,0 +1,52 @@
+@page
+@model CleanChannel.Landing.Pages.Account.IndexModel
+@{
+    ViewData["Title"] = "Your account";
+}
+
+<section class="account-shell">
+    <div class="account-heading">
+        <div><p class="eyebrow">Control plane</p><h1>Your account.</h1><p>@User.Identity?.Name</p></div>
+        <form method="post" asp-page-handler="Logout"><button class="button button-quiet" type="submit">Log out</button></form>
+    </div>
+    @if (Model.Message is not null) { <div class="message" role="status">@Model.Message</div> }
+    @if (Model.ErrorMessage is not null) { <div class="validation" role="alert">@Model.ErrorMessage</div> }
+    <div class="account-grid">
+        <article class="account-card status-card">
+            <p class="eyebrow">License status</p>
+            @if (Model.Status.IsActive)
+            {
+                <div class="license-status"><span class="status-dot" aria-hidden="true"></span>Active Pro license</div>
+                <dl class="license-meta"><div><dt>Plan</dt><dd>@Model.Status.Plan</dd></div><div><dt>Expires</dt><dd>@(Model.Status.ExpiresAt?.ToString("yyyy-MM-dd") ?? "Never")</dd></div></dl>
+                <div class="account-actions"><a class="button button-primary" href="/downloads/pro">Download Pro demo artifact</a></div>
+            }
+            else
+            {
+                <div class="license-status"><span class="status-dot" aria-hidden="true"></span>No active Pro license</div>
+                <p class="hint">Purchase a demo plan, then activate its code to unlock the protected artifact.</p>
+            }
+        </article>
+        <article class="account-card">
+            <p class="eyebrow">Sandbox purchase</p>
+            <h2>Choose a demo plan</h2>
+            <p class="hint">This issues a local activation code. No payment provider is connected.</p>
+            <form method="post" asp-page-handler="Purchase">
+                <div class="field"><label for="plan">Plan</label><select id="plan" name="plan"><option value="Annual">Pro Annual</option><option value="Lifetime">Pro Lifetime</option></select></div>
+                <button class="button button-secondary" type="submit">Simulate purchase</button>
+            </form>
+            @if (Model.PurchaseCode is not null)
+            {
+                <div class="purchase-code"><label>Activation code — shown once</label><code>@Model.PurchaseCode</code></div>
+            }
+        </article>
+        <article class="account-card account-card-wide">
+            <p class="eyebrow">Activate entitlement</p>
+            <h2>Enter a license code</h2>
+            <p class="hint">The real product will receive signed entitlements from the private Pro control plane. This demo performs the same authorization shape locally.</p>
+            <form method="post" asp-page-handler="Activate">
+                <div class="field"><label for="activationCode">Activation code</label><input id="activationCode" name="activationCode" autocomplete="off" maxlength="64" required /></div>
+                <button class="button button-primary" type="submit">Activate license</button>
+            </form>
+        </article>
+    </div>
+</section>

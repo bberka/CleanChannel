@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CleanChannel open-core audio routing with an optional licensed Pro control plane." />
+    <title>@ViewData["Title"] - CleanChannel</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" asp-page="/Index" aria-label="CleanChannel home">
+            <span class="brand-mark" aria-hidden="true">CC</span>
+            <span>CleanChannel</span>
+        </a>
+        <nav aria-label="Primary navigation">
+            <a href="/#product">Product</a>
+            <a href="/#plans">Plans</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-page="/Account/Index">Account</a>
+            }
+            else
+            {
+                <a asp-page="/Account/Login">Log in</a>
+                <a class="nav-cta" asp-page="/Account/Register">Create account</a>
+            }
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="site-footer">
+        <span>CleanChannel · local audio first</span>
+        <span>Demo commerce sandbox · no real payments</span>
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

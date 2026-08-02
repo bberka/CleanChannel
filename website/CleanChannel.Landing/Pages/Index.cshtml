@@ -1,0 +1,73 @@
+@page
+@model CleanChannel.Landing.Pages.IndexModel
+@{
+    ViewData["Title"] = "Audio control, without the ceremony";
+}
+
+<section class="demo-banner" role="status">
+    <span class="status-dot" aria-hidden="true"></span>
+    <strong>Local demo sandbox</strong>
+    <span>Purchases and licenses are simulated in memory. No card is charged.</span>
+</section>
+
+<section class="hero" id="product">
+    <div class="hero-copy">
+        <p class="eyebrow">Open core · Windows audio control</p>
+        <h1>Your channels.<br /><em>Your rules.</em></h1>
+        <p class="lede">CleanChannel is building a lightweight tray mixer for sound, chat, game, and mic paths—without making basic local audio depend on an account.</p>
+        <div class="hero-actions">
+            <a class="button button-primary" href="#plans">See Pro plans <span aria-hidden="true">↓</span></a>
+            <a class="button button-quiet" href="#core">Explore the free core <span aria-hidden="true">→</span></a>
+        </div>
+    </div>
+    <div class="mixer-preview" aria-label="Illustration of the CleanChannel mixer">
+        <div class="preview-topline"><span>LIVE MIXER</span><span class="preview-live">● AUDIO READY</span></div>
+        <div class="preview-row"><span><i class="channel-icon sound">S</i><b>Sound</b></span><span class="meter"><i style="width: 78%"></i></span><strong>72</strong></div>
+        <div class="preview-row"><span><i class="channel-icon chat">C</i><b>Chat</b></span><span class="meter"><i style="width: 46%"></i></span><strong>48</strong></div>
+        <div class="preview-row active"><span><i class="channel-icon game">G</i><b>Game</b></span><span class="meter"><i style="width: 91%"></i></span><strong>86</strong></div>
+        <div class="preview-row"><span><i class="channel-icon mic">M</i><b>Mic</b></span><span class="meter"><i style="width: 34%"></i></span><strong>38</strong></div>
+        <div class="preview-footer"><span>Focused profile</span><strong>VALORANT · Competitive</strong></div>
+    </div>
+</section>
+
+<section class="proof-strip" id="core">
+    <div><strong>Free core</strong><span>Basic routing, EQ, gain, mute, profiles</span></div>
+    <div><strong>No account required</strong><span>Local audio keeps working offline</span></div>
+    <div><strong>Separate Pro host</strong><span>AI and premium services stay out of the driver</span></div>
+</section>
+
+<section class="section" id="plans">
+    <div class="section-heading">
+        <p class="eyebrow">Optional Pro control plane</p>
+        <h2>Pay for the hard parts.<br /><span>Keep the essentials open.</span></h2>
+        <p>Pro features are distributed separately after account authentication and license activation. This demo shows the intended gate without pretending to be a real checkout.</p>
+    </div>
+    <div class="plan-grid">
+        <article class="plan-card">
+            <div class="plan-label">Community / Lite</div>
+            <h3>Free</h3>
+            <p class="plan-description">The foundation stays useful on its own.</p>
+            <ul><li>Local routing and mixer</li><li>User profiles and EQ</li><li>Lite mode and offline use</li><li>No account required</li></ul>
+            <a class="button button-secondary" asp-page="/Index" asp-fragment="core">Download core</a>
+        </article>
+        <article class="plan-card plan-card-featured">
+            <div class="plan-label">Most flexible</div>
+            <h3>Pro Annual <span>/ year</span></h3>
+            <p class="plan-description">For ongoing AI processing and premium content.</p>
+            <ul><li>AI noise cancellation</li><li>Premium presets and packs</li><li>Cloud sync when enabled</li><li>Updates while active</li></ul>
+            <a class="button button-primary" asp-page="/Account/Register">Start demo purchase</a>
+        </article>
+        <article class="plan-card">
+            <div class="plan-label">One and done</div>
+            <h3>Pro Lifetime</h3>
+            <p class="plan-description">One purchase, perpetual product license.</p>
+            <ul><li>All Pro processing</li><li>Premium presets and packs</li><li>No recurring renewal</li><li>Updates included while product exists</li></ul>
+            <a class="button button-secondary" asp-page="/Account/Register">Get lifetime demo</a>
+        </article>
+    </div>
+</section>
+
+<section class="boundary-note">
+    <div class="boundary-icon" aria-hidden="true">↔</div>
+    <div><strong>Core audio never waits for the cloud.</strong><p>The Windows app and real-time audio path remain account-free. The website only authorizes separately distributed Pro artifacts and services.</p></div>
+</section>
