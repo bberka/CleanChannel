@@ -4,7 +4,18 @@ CleanChannel is a Windows-first audio routing and enhancement application inspir
 
 The goal is to provide stable virtual audio channels for games, chat applications, and general system sound; per-channel output routing; custom EQ and gain; microphone processing; tray controls; global shortcuts; and automatic profile verification.
 
-> Status: pre-alpha bootstrap. The repository now contains the managed tray shell, public contracts, logging foundation, profile core, and Rust AudioHost lifecycle placeholder. Real WASAPI routing and the virtual driver are still future slices.
+> Status: 0.1 demo. The repository contains a usable Avalonia tray/control-plane demo and a local website licensing sandbox. Real WASAPI routing, virtual audio endpoints, production licensing infrastructure, and signed Pro artifacts are still future slices.
+
+## Current 0.1 demo
+
+The current demo provides:
+
+- An Avalonia/Fluent tray application with Sound, Chat, Game, and Mic control cards.
+- Local control-plane behavior for volume, mute, full mute, full off/restore, device/EQ selection, shortcuts, status reporting, and theme support.
+- A local landing-site sandbox for account registration, demo annual/lifetime license flows, activation, and protected placeholder Pro downloads.
+- Serilog-based local diagnostics and a fail-fast verification script covering managed code, the landing site, and Rust checks.
+
+This is not yet an audio-routing release. The demo does not provide real WASAPI processing, virtual render/capture devices, a production payment or licensing backend, or signed Pro binaries. The website sandbox is for local development only.
 
 ## Product direction
 
@@ -84,11 +95,13 @@ Profiles, game detection, AI noise cancellation, premium presets, and cloud feat
 
 ## Development prerequisites
 
-The current bootstrap can be built and tested with:
+The current 0.1 demo can be built and tested with:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File eng\verify.ps1
 ```
+
+The verification script covers the CleanChannel managed solution, the isolated landing-site project and tests, and the Rust AudioHost checks.
 
 The planned Windows development environment for the full product is:
 

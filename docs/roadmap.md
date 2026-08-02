@@ -2,12 +2,21 @@
 
 This roadmap is ordered by technical risk and user value. Each phase should leave a working build.
 
+## Current 0.1 demo checkpoint
+
+- [x] Avalonia/Fluent tray and control-plane demo with Sound, Chat, Game, and Mic cards.
+- [x] Local demo controls for volume, mute, full mute, full off/restore, device/EQ selection, shortcuts, status, and themes.
+- [x] Local landing-site licensing sandbox with registration, demo annual/lifetime flows, activation, and protected placeholder Pro download.
+- [x] Fail-fast verification for the managed solution, landing site, and Rust checks.
+
+The checkpoint is intentionally a control-plane and licensing demo. It does not include real WASAPI processing, virtual render/capture devices, a production payment or licensing backend, or signed Pro artifacts.
+
 ## Phase 0: Design and feasibility
 
 - [x] Define domain language and product principles.
 - [x] Choose hybrid UI, audio host, and driver boundaries.
 - [x] Choose stable endpoint slots instead of dynamic per-game device installation.
-- [ ] Create the initial solution and build pipeline.
+- [x] Create the initial solution and build pipeline.
 - [ ] Decide the initial open-source license.
 - [ ] Confirm the first virtual endpoint development strategy.
 

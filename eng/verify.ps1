@@ -11,6 +11,8 @@ $ErrorActionPreference = "Stop"
 $env:AVALONIA_TELEMETRY_OPTOUT = "1"
 
 $solutionPath = Join-Path $PSScriptRoot "..\CleanChannel.sln"
+$websiteProjectPath = Join-Path $PSScriptRoot "..\website\CleanChannel.Landing\CleanChannel.Landing.csproj"
+$websiteTestsProjectPath = Join-Path $PSScriptRoot "..\website\CleanChannel.Landing.Tests\CleanChannel.Landing.Tests.csproj"
 $nativeManifestPath = Join-Path $PSScriptRoot "..\src\native\Cargo.toml"
 
 dotnet restore $solutionPath
@@ -26,6 +28,31 @@ if ($LASTEXITCODE -ne 0) {
 dotnet test $solutionPath --configuration $Configuration --no-build --no-restore
 if ($LASTEXITCODE -ne 0) {
     throw "dotnet test failed with exit code $LASTEXITCODE"
+}
+
+dotnet restore $websiteProjectPath
+if ($LASTEXITCODE -ne 0) {
+    throw "website restore failed with exit code $LASTEXITCODE"
+}
+
+dotnet restore $websiteTestsProjectPath
+if ($LASTEXITCODE -ne 0) {
+    throw "website tests restore failed with exit code $LASTEXITCODE"
+}
+
+dotnet build $websiteProjectPath --configuration $Configuration --no-restore
+if ($LASTEXITCODE -ne 0) {
+    throw "website build failed with exit code $LASTEXITCODE"
+}
+
+dotnet build $websiteTestsProjectPath --configuration $Configuration --no-restore
+if ($LASTEXITCODE -ne 0) {
+    throw "website tests build failed with exit code $LASTEXITCODE"
+}
+
+dotnet test $websiteTestsProjectPath --configuration $Configuration --no-build --no-restore
+if ($LASTEXITCODE -ne 0) {
+    throw "website tests failed with exit code $LASTEXITCODE"
 }
 
 cargo fmt --manifest-path $nativeManifestPath --check
