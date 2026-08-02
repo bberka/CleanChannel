@@ -4,7 +4,7 @@ CleanChannel is a Windows-first audio routing and enhancement application inspir
 
 The goal is to provide stable virtual audio channels for games, chat applications, and general system sound; per-channel output routing; custom EQ and gain; microphone processing; tray controls; global shortcuts; and automatic profile verification.
 
-> Status: pre-alpha design phase. This repository currently contains product and architecture documentation; implementation has not started yet.
+> Status: pre-alpha bootstrap. The repository now contains the managed tray shell, public contracts, logging foundation, profile core, and Rust AudioHost lifecycle placeholder. Real WASAPI routing and the virtual driver are still future slices.
 
 ## Product direction
 
@@ -66,6 +66,8 @@ The planned implementation uses C#/.NET 10 and Avalonia for the UI/control plane
 - [ADR-0002: Stable channel slots and verification](docs/adr/0002-stable-channel-slots.md)
 - [ADR-0003: Open core and official Pro distribution](docs/adr/0003-open-core-and-pro-distribution.md)
 - [ADR-0004: Focused profiles and best-effort app routing](docs/adr/0004-focused-profiles-and-best-effort-app-routing.md)
+- [Pro development and private build boundary](docs/pro-development.md)
+- [ADR-0005: Privacy-safe logging and an optional Pro host](docs/adr/0005-observability-and-pro-boundary.md)
 
 ## First milestone
 
@@ -82,13 +84,21 @@ Profiles, game detection, AI noise cancellation, premium presets, and cloud feat
 
 ## Development prerequisites
 
-The implementation is not scaffolded yet. The planned Windows development environment is:
+The current bootstrap can be built and tested with:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File eng\verify.ps1
+```
+
+The planned Windows development environment for the full product is:
 
 - Windows 10 or Windows 11, x64 first.
 - .NET 10 SDK.
 - Visual Studio with desktop C++ tooling.
 - Windows Driver Kit for the virtual endpoint work.
 - Rust stable toolchain for the audio host.
+
+The public build does not contain closed-source Pro implementation code. See [Pro development and private build boundary](docs/pro-development.md) for the opt-in private build.
 
 Driver development should begin on a dedicated test machine. Official user builds will require a Microsoft-signed driver package.
 

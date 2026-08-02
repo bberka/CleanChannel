@@ -30,6 +30,10 @@ The control plane contains configuration, profile evaluation, channel state, lic
 
 The UI must not own the real-time audio loop.
 
+### Diagnostics
+
+The managed control plane uses `CleanChannel.Diagnostics` for structured local logging through Serilog and the `Microsoft.Extensions.Logging` bridge. Logs default to `%LOCALAPPDATA%\CleanChannel\Logs`, use UTC timestamps and stable event identifiers, and are bounded by daily/size rollover and retention. Console output is opt-in for development. The logger redacts common credential, entitlement, and audio-sample fields; audio callbacks must not call it.
+
 ### AudioHost
 
 The Rust user-mode process owns:
@@ -63,7 +67,7 @@ References: [Microsoft virtual audio devices](https://learn.microsoft.com/en-us/
 
 ### Pro extension boundary
 
-Pro functionality should be delivered as a separate process or native extension boundary rather than a reflection-loaded assembly inside the NativeAOT UI.
+Pro functionality should be delivered as a separate process rather than a reflection-loaded assembly inside the NativeAOT UI. The public app references only the source-generated `CleanChannel.ProContracts` assembly; the private `CleanChannel.ProHost` implementation is built from a separate ignored checkout and will communicate through versioned, authenticated local IPC. The current bootstrap defines the attestation validator but does not connect to a Pro host yet.
 
 Candidate Pro modules include:
 
