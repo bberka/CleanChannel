@@ -8,6 +8,14 @@ The core should remain useful without an account. Pro entitlement may require an
 
 This is a better fit for a local Windows utility than making every user register before they can change a volume slider.
 
+## Open-source license
+
+The public CleanChannel core is licensed under the Apache License, Version 2.0. This permits use, modification, redistribution, and commercial products built on the public core, subject to the license's copyright, patent, notice, attribution, and trademark terms. It does not grant rights to the CleanChannel name or logo.
+
+The Apache-2.0 grant applies only to material included in this repository and covered by that license. CleanChannel Pro implementation code, AI models, premium content, production account and billing services, and official signed release artifacts are separately distributed under commercial terms and are not part of the public open-core grant.
+
+Third-party dependencies, driver components, DSP libraries, models, and bundled assets may have different licenses. Their terms and required notices remain applicable; release packaging must preserve them. The repository-level project notice is in [NOTICE](../NOTICE).
+
 ## What should remain open
 
 The following should be open and inspectable wherever practical:
@@ -116,7 +124,7 @@ Pro distribution
   - Official installer and signed release artifacts
 ```
 
-The repository license is still an explicit decision. A permissive license is the simplest fit for proprietary extensions, but the final choice should account for driver code, DSP dependencies, model licenses, and contributor agreements.
+The repository license is Apache-2.0. This is deliberately permissive: it keeps the core useful and forkable while allowing a separate proprietary Pro distribution to consume stable public contracts. Before accepting substantial external contributions, the project should document whether it will use a Developer Certificate of Origin or a contributor license agreement.
 
 ## Business risks to validate
 

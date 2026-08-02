@@ -18,7 +18,7 @@ The sidebar is the desktop shell/navigation layer and remains separate from the 
 - [x] Choose hybrid UI, audio host, and driver boundaries.
 - [x] Choose stable endpoint slots instead of dynamic per-game device installation.
 - [x] Create the initial solution and build pipeline.
-- [ ] Decide the initial open-source license.
+- [x] Select Apache License 2.0 for the public core and document the Pro boundary.
 - [ ] Confirm the first virtual endpoint development strategy.
 
 Checkpoint: the repository builds a minimal UI and the audio/driver spike has a written result.
@@ -97,6 +97,7 @@ Checkpoint: Pro features can be unavailable without breaking core local audio.
 - [ ] Crash reporting and privacy documentation.
 - [ ] Public documentation and troubleshooting guide.
 - [ ] License terms and refund policy.
+- [ ] Audit third-party license notices and attribution for release packaging.
 
 ## Explicitly not doing initially
 

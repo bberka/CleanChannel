@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Accepted
 
 ## Date
 
@@ -20,12 +20,14 @@ Use an open-core model:
 
 - Keep core routing, basic DSP, profiles, verification, contracts, and Lite mode open.
 - Keep Pro processing, AI models, premium content, and cloud services separately distributed and proprietary where their maintenance or third-party licensing requires it.
+- License the public repository under the Apache License, Version 2.0. This covers the open source included in this repository, including the control plane, public contracts, core audio infrastructure, Lite mode, tests, and documentation unless a file states otherwise.
+- Permit commercial use, redistribution, and proprietary extensions of the Apache-2.0 public core, subject to the license's notice, attribution, patent, and trademark terms.
+- Reserve the CleanChannel name, logo, and other brand identifiers separately; Apache-2.0 does not grant trademark rights.
+- Keep third-party dependencies, driver components, DSP libraries, models, and bundled assets under their own licenses and preserve required notices.
 - Distribute official application and driver binaries through an installer signed by the project publisher.
 - Do not require an account for Lite mode or basic local audio.
 - Allow Pro entitlement checks in the control plane, with locally cached signed entitlements so temporary account-service outages do not stop audio.
 - Never put licensing or network calls in the driver or real-time audio callback.
-
-The exact open-source license is intentionally a follow-up decision. A permissive license is a candidate because proprietary Pro processes must be able to consume stable public contracts, but the choice must account for driver code, DSP dependencies, model licenses, and contributor terms.
 
 ## Alternatives considered
 
@@ -44,7 +46,9 @@ Selected because it preserves inspectability and community contribution while gi
 ## Consequences
 
 - The project maintains two meaningful boundaries: open core versus Pro extensions, and development driver packages versus official signed packages.
+- Apache-2.0 does not prevent forks or commercial use of the public core. That is intentional; product differentiation and paid value come from separately distributed Pro implementation, content, services, and official supported binaries rather than artificial restrictions on the open core.
 - Pro features must fail gracefully when unavailable.
-- The project needs license terms, payment/entitlement handling, privacy documentation, and a driver release process before public distribution.
+- The repository must ship the Apache-2.0 `LICENSE` and project `NOTICE`, and release packaging must account for third-party license obligations.
+- The project still needs commercial Pro terms, payment/entitlement handling, privacy documentation, contributor policy, and a driver release process before public distribution.
 - A lifetime license creates a long-term update obligation and must be defined precisely in purchase terms.
 - The core remains valuable even if a user never buys Pro.

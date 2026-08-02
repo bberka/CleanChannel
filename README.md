@@ -73,6 +73,8 @@ The planned implementation uses C#/.NET 10 and Avalonia for the UI/control plane
 ## Documentation
 
 - [Project context and domain language](CONTEXT.md)
+- [License](LICENSE)
+- [Project notices](NOTICE)
 - [System architecture](docs/architecture.md)
 - [Product and licensing model](docs/product-and-licensing.md)
 - [Roadmap](docs/roadmap.md)
@@ -120,6 +122,8 @@ Driver development should begin on a dedicated test machine. Official user build
 
 ## Contributing
 
-The intended project model is open core: the basic routing and audio infrastructure should be inspectable and contributable, while separately distributed Pro extensions may remain proprietary. See [docs/product-and-licensing.md](docs/product-and-licensing.md).
+The public core is licensed under the [Apache License, Version 2.0](LICENSE). It may be used, modified, and redistributed, including commercially, subject to the license, notice, and attribution requirements. Apache-2.0 does not grant rights to the CleanChannel name or logo.
+
+The intended project model is open core: the basic routing and audio infrastructure should be inspectable and contributable, while separately distributed Pro implementation code, AI models, premium content, production services, and official signed artifacts may remain proprietary. See [docs/product-and-licensing.md](docs/product-and-licensing.md) and [NOTICE](NOTICE).
 
 Before implementation begins, architectural changes should be captured in an ADR and the domain language in [CONTEXT.md](CONTEXT.md) should remain consistent.

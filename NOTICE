@@ -1,0 +1,14 @@
+CleanChannel
+Copyright 2026 CleanChannel contributors
+
+This repository contains the open CleanChannel core and a local 0.1
+control-plane/licensing demo. Proprietary CleanChannel Pro implementation
+code, AI models, premium content, production licensing services, signing
+keys, and signed release artifacts are not included in this repository.
+
+CleanChannel is distributed under the Apache License, Version 2.0.
+See the LICENSE file for the license text.
+
+Third-party dependencies and bundled assets remain subject to their
+respective licenses. Release packaging must include any notices and
+attribution required by those licenses.
