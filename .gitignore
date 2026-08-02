@@ -1,0 +1,35 @@
+# .NET
+[Bb]in/
+[Oo]bj/
+TestResults/
+artifacts/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Avalonia / IDE output
+*.pdb
+*.apphost
+
+# Rust
+target/
+
+# Native build output
+build/
+out/
+
+# Local tooling and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.snk
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
