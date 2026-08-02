@@ -1,0 +1,14 @@
+[package]
+name = "cleanchannel-audiohost"
+version = "0.1.0"
+edition = "2021"
+description = "CleanChannel user-mode audio host foundation"
+license = "MIT"
+
+[lib]
+name = "cleanchannel_audiohost"
+path = "src/lib.rs"
+
+[[bin]]
+name = "cleanchannel-audiohost"
+path = "src/main.rs"
